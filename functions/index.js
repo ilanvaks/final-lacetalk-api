@@ -2,7 +2,7 @@ import functions from "firebase-functions"
 import express from "express"
 import cors from "cors"
 
-import { getAllSneakers, addSneaker, updateSneaker, deleteSneaker } from "./src/sneakers.js"
+import { getAllSneakers, addSneaker, updateSneaker, deleteSneaker, voteUpSneaker, voteDownSneaker } from "./src/sneakers.js"
 
 const PORT = 3000
 const app = express()
@@ -14,6 +14,8 @@ res.send("Hello World")
 })
 app.get('/sneaker', getAllSneakers)
 app.post('/sneaker', addSneaker)
+app.post('/sneakers/:sneakerId/voteUp', voteUpSneaker);
+app.post('/sneakers/:sneakerId/voteDown', voteDownSneaker);
 app.delete('/sneaker/:sneakerId', deleteSneaker)
 app.patch('/sneaker/:sneakerId', updateSneaker)
 

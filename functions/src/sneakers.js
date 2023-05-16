@@ -41,8 +41,32 @@ export async function updateSneaker(req,res) {
   
   const query = await coll.findOneAndUpdate( sneakerId, updateSneaker, returnOption)
   await getAllSneakers(req,res)
-  res.status(201).send({message: "sneaker has been updated"})
+  res.status(201).send({message: "Sneaker has been updated"})
   console.table(query.value)
 
 }
 
+// Thumbs Up
+export async function voteUpSneaker(req, res) {
+  try {
+    const sneakerId = {"_id": new ObjectId(req.params.sneakerId)}
+    const voteUp = { $inc: { thumbsUp: 1 } }
+
+    await coll.findOneAndUpdate(sneakerId, voteUp, { returnOriginal: false });
+    getAllSneakers(req, res)
+  } catch (error) {
+    res.status(500).send({error: "An error occurred while voting up."});
+  }
+}
+
+// Thumbs Down
+export async function voteDownSneaker(req, res) {
+  try {
+    const sneakerId = {"_id": new ObjectId(req.params.sneakerId)}
+    const voteDown = { $inc: { thumbsDown: 1 } }
+    await coll.findOneAndUpdate(sneakerId, voteDown, { returnOriginal: false });
+    getAllSneakers(req, res)
+  } catch (error) {
+    res.status(500).send({error: "An error occurred while voting down."});
+  }
+}
