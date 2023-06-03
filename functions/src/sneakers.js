@@ -12,10 +12,6 @@ export async function getAllSneakers(req,res) {
 
 //Crud: POST 
 export async function addSneaker(req,res) {
-  if (!req.headers.check || req.headers.check !== "isAdmin") {
-    res.status(401).send({message: "NOT ADMIN!"})
-    return
-  }
   const newSneaker = req.body
   await coll.insertOne(newSneaker)
   res.status(201).send({ message: "new sneaker added"})
@@ -24,10 +20,6 @@ export async function addSneaker(req,res) {
 //CRUD: Delete with updated list afterwards
 
 export async function deleteSneaker(req, res) {
-  if (!req.headers.check || req.headers.check !== "isAdmin") {
-    res.status(401).send({message: "NOT ADMIN!"})
-    return
-  }
   try {
     const sneakerId = { "_id": new ObjectId(req.params.sneakerId)};
     await coll.deleteOne(sneakerId);
@@ -43,10 +35,6 @@ export async function deleteSneaker(req, res) {
 //CRUD: Update
 
 export async function updateSneaker(req,res) {
-  if (!req.headers.check || req.headers.check !== "isAdmin") {
-    res.status(401).send({message: "not authorized"})
-    return 
-  }
   const sneakerId = {"_id": new ObjectId(req.params.sneakerId)}
   const updateSneaker = { $set: req.body }
   const returnOption = { returnNewDocument: true}
