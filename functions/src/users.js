@@ -1,7 +1,7 @@
-import { db } from "./dbConnect.js";
-import { hashSync } from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { hashSync } from 'bcrypt';
 import { ObjectId } from "mongodb";
+import { db } from "./dbConnect.js";
 import { secretKey, salt } from '../secrets.js';
 
 const userColl = db.collection("users");
@@ -22,17 +22,17 @@ export async function registerUser(req, res) {
 
 export async function loginUser(req, res) {
   const { email, password } = req.body;
-
-  const hashedPassword = hashSync(password, salt); // Hash the password first
+  const hashedPassword = hashSync(password, salt);
 
   const user = await userColl.findOne({ email: email.toLowerCase(), password: hashedPassword });
-  if (!user) return res.status(400).send('Invalid email or password.');
+  if (!user) 
+    return res.status(400).send('Invalid email or password.');
 
   delete user.password; 
   const token = generateAuthToken(user);
   res.header('x-auth-token', token).send({
       _id: user._id,
-      username: user.username
+      email: user.email  
   });
 }
 
