@@ -6,7 +6,7 @@ const coll = db.collection("lacetalk-collection")
 //CRUD: GET
 
 export async function getAllSneakers(req,res) {
-  const mySneaker = await coll.find({}).toArray()
+  const mySneaker = await coll.find({}).sort({ thumbsUp: 1 }).toArray()
   res.send(mySneaker).status(200)
 }
 
